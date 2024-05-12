@@ -1,0 +1,150 @@
+---
+title: "Lab 2"
+output: html_document
+date: '2022-10-17'
+---
+
+```{r}
+xvalues <- -5:5
+subset <- 0:5
+quadx <- log(subset)
+plot(subset, quadx, type = "b", main = 'This is the title', sub = 'This is the subtitle', xlab = 'x', ylab = 'log x', col.main="dark grey", col="blue",lty=3,pch="*",lwd=2,cex=2)
+# 'p' for points; 'l' for line
+# 'b' for both points and line
+# 'h' vertical lines from the x-axis to the points 
+# 'n' only plot the axes
+```   
+# Bar Chart
+```{r}
+data(VADeaths)
+#help(VADeaths)
+VADeaths[1,]
+barplot(VADeaths[1,])
+print(VADeaths)
+barplot(VADeaths)
+barplot(VADeaths,beside=TRUE)
+t(VADeaths)
+barplot(t(VADeaths))
+  
+```   
+
+# Histogram and Density estimation
+```{r}
+hist(rnorm(1000,3,1))
+hist(rexp(1000,4))
+
+y <- rnorm(50)
+plot(density(y))
+rug(y)
+# a compact visualisation designed to supplement a 2d display with the two 1d marginal distributions.
+```
+
+# Boxplot
+```{r}
+data(OrchardSprays)
+#help(OrchardSprays)
+boxplot(decrease ~ treatment, data = OrchardSprays, log = 'y', col = 'lightblue', notch = TRUE)
+boxplot(decrease ~ treatment, data = OrchardSprays, horizontal=TRUE)
+boxplot(decrease ~ treatment, data = OrchardSprays, log = "y", col="bisque")
+```
+
+# Quantile plots
+# Q-Q plot allows the visual assessment of how well a continuous variables fits a known distribution.
+```{r}
+qqnorm(OrchardSprays$decrease)
+qqnorm(log(OrchardSprays$decrease))
+# normal is not good ?
+
+# check whether exponential is good
+lambda <- 1 / mean(OrchardSprays$decrease)
+n <- length(OrchardSprays$decrease)
+prob.grid <- ppoints(n)
+qqplot(qexp(prob.grid,rate=lambda), OrchardSprays$decrease)
+
+```
+
+# Multivariate data
+```{r}
+data(USArrests)
+#help("USArrests")
+matplot(USArrests, type = "l")
+
+```
+
+#Pairwise plt
+```{r}
+pairs(USArrests) # waste diagonal space
+
+library(car)
+scatterplotMatrix(USArrests, diagonal="density")
+
+```
+
+```{r}
+data(iris)
+names(iris)
+plot(iris$Sepal.Length, iris$Petal.Length)
+coplot(Petal.Length ~ Sepal.Length | Species,data=iris)
+```
+
+```{r}
+data(swiss)
+names(swiss)
+coplot(Fertility ~ Education | Agriculture, data=swiss, overlap=0)
+coplot(Fertility ~ Education | Agriculture, data=swiss, overlap=0.5)
+coplot(Fertility ~ Education | Agriculture, data=swiss, overlap=0.5,
+panel=panel.smooth)
+
+```
+
+```{r}
+class(OrchardSprays)
+plot(OrchardSprays)
+data(state)
+class(state.division)
+plot(state.division)
+xvalues <- -5:5
+quadx <- xvalues^2
+plot.default(xvalues,quadx)
+```
+
+#ggplot
+```{r}
+library(ggplot2)
+library(MASS)
+summary(Animals)
+
+myscatterplot = ggplot(data = Animals, aes(x = log(body), y = log(brain)))
+myscatterplot = myscatterplot + geom_point() + geom_smooth(method = "lm") # add 'beset fit' line with corresponding CI
+
+myscatterplot = myscatterplot +
+ggtitle("log(brain weight) vs log(body weight)", subtitle="From animals dataset") +
+xlab("log(body weight) (log(kg))") + ylab("log(brain weight) (log(g))")
+plot(myscatterplot)
+
+
+```
+
+#Boxplots, density plot, histogram
+```{r}
+data(iris)
+summary(iris)
+```
+
+```{r}
+myplot <- ggplot(data=iris, aes(x = Sepal.Length, y = Sepal.Width))
+myplot = myplot + geom_point(aes(color=Species, shape=Species)) +
+xlab("Sepal Length (cm)") + ylab("Sepal Width (cm)") + ggtitle("Sepal Length-Width")
+plot(myplot)
+```
+
+
+```{r}
+alpha <- qt(1-0.05/2, df = 16)
+beta <- qt(1- 0.1, df = 16)
+
+2*(alpha + beta)^2 * 16^2/15^2
+```
+
+
+
